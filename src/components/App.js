@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import AppRouter from './Router';
+import Navbar from './Navbar';
 import './App.css';
 
-class App extends Component {
+export default class App extends React.Component {
   render() {
     return (
       <div className="App">
+        <Navbar />
         <AppRouter />
       </div>
     );
   }
 }
-
-export default App;
