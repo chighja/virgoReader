@@ -1,24 +1,28 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import AuthContext, { auth } from "../utils/authContext";
 
 class Home extends Component {
-  login() {
-    this.props.auth.login();
+  componentDidMount() {
+    if (localStorage.getItem("isLoggedIn") === "true") {
+      auth.renewSession();
+    }
   }
+
   render() {
-    const { isAuthenticated } = this.props.auth;
     return (
-      <div className="container">
-        {isAuthenticated() && <h4>You are logged in!</h4>}
-        {!isAuthenticated() && (
-          <h4>
-            You are not logged in! Please{' '}
-            <a style={{ cursor: 'pointer' }} onClick={this.login.bind(this)}>
-              Log In
-            </a>{' '}
-            to continue.
-          </h4>
+      <AuthContext.Consumer>
+        {auth => (
+          <div className="App">
+            <Link to="/">
+              <button>Home</button>
+            </Link>
+            {!auth.isAuthenticated() && (
+              <button onClick={auth.login}>Log In</button>
+            )}
+          </div>
         )}
-      </div>
+      </AuthContext.Consumer>
     );
   }
 }

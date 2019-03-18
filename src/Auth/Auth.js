@@ -15,37 +15,27 @@ export default class Auth {
     scope: 'openid'
   });
 
-  constructor() {
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-    this.handleAuthentication = this.handleAuthentication.bind(this);
-    this.isAuthenticated = this.isAuthenticated.bind(this);
-    this.getAccessToken = this.getAccessToken.bind(this);
-    this.getIdToken = this.getIdToken.bind(this);
-    this.renewSession = this.renewSession.bind(this);
-  }
-
-  login() {
+  login = () => {
     this.auth0.authorize();
   }
 
-  handleAuthentication() {
+  handleAuthentication = () => {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
       } else if (err) {
-        history.replace('/home');
+        history.replace('/dashboard');
         console.log(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
       }
     });
   }
 
-  getAccessToken() {
+  getAccessToken = () => {
     return this.accessToken;
   }
 
-  getIdToken() {
+  getIdToken = () => {
     return this.idToken;
   }
 
@@ -60,10 +50,10 @@ export default class Auth {
     this.expiresAt = expiresAt;
 
     // navigate to the home route
-    history.replace('/home');
+    history.replace('/dashboard');
   }
 
-  renewSession() {
+  renewSession = () => {
     this.auth0.checkSession({}, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
@@ -77,7 +67,7 @@ export default class Auth {
     });
   }
 
-  logout() {
+  logout = () => {
     // Remove tokens and expiry time
     this.accessToken = null;
     this.idToken = null;
@@ -85,12 +75,11 @@ export default class Auth {
 
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem('isLoggedIn');
-
     // navigate to the home route
-    history.replace('/home');
+    history.replace('/dashboard');
   }
 
-  isAuthenticated() {
+  isAuthenticated = () => {
     // Check whether the current time is past the
     // access token's expiry time
     let expiresAt = this.expiresAt;
